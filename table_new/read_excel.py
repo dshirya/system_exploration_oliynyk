@@ -45,4 +45,5 @@ def excel_to_dataframe():
         
     df_filtered = df[df['Include'] == 1].copy()
 
-    return df_filtered  # Return the filtered dataframe
+    # Return the filtered dataframe and the sheet name
+    return df_filtered, sheet_name
