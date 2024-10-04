@@ -6,11 +6,13 @@ from matplotlib import pyplot as plt
 from matplotlib import colors as mcolors
 import numpy as np
 import matplotlib.patches as patches
-# Import both coordinate variants
+
 import sys
 
 
 file_name = 'table_coordinates.xlsx'
+
+
 #Load data from the Excel file dynamically
 def excel_to_dataframe():
     excel_file = pd.ExcelFile(file_name)
@@ -95,6 +97,7 @@ def main():
     element_dict = {row['Symbol']: (row['x'], row['y']) for _, row in df.iterrows() if row['Include'] == 1}  # Need this part for verification and calculation purposes
     marker_types = ['o', 's', '^', 'D', 'P', '*', '2', '8', 'X', 'h']
     # circle, square, triangle, diamond, pentagon, star, tri_up, octagon, X, hexagon
+    
     colors = list(mcolors.TABLEAU_COLORS.values())
 
     def verify_elements(molecule):
@@ -105,23 +108,23 @@ def main():
                 sys.exit()
 
     def periodic_table():
-        df, sheet_name = excel_to_dataframe()
 
-#  Calculate the range of x and y values
+        # Calculate the range of x and y values
         x_range = df['x'].max() - df['x'].min() + 1  # Adding 1 to ensure the full range is covered
         y_range = df['y'].max() - df['y'].min() + 1
 
-# Scale factor for adjusting the figure size (adjust as needed based on the visual output)
+        # Scale factor for adjusting the figure size (adjust as needed based on the visual output)
         scale_factor = 1.5
 
-# Set figure size dynamically based on x and y ranges
+        # Set figure size dynamically based on x and y ranges
         figsize_x = x_range * scale_factor
         figsize_y = y_range * scale_factor
 
-# Create figure and axis with dynamic figsize
+        # Create figure and axis with dynamic figsize
         fig, ax = plt.subplots(figsize=(figsize_x, figsize_y))
 
-# Determine whether to plot rectangles or circles based on the sheet name
+        # Determine whether to plot rectangles or circles based on the sheet name
+        
         if "table" in sheet_name.lower():
             shape_type = 'rectangle'
         elif "plot" in sheet_name.lower():
@@ -129,7 +132,7 @@ def main():
         else:
             raise ValueError("Sheet name must contain 'table' or 'plot' to specify shape type.")
 
-# Plot each element with the chosen shape type
+        # Plot each element with the chosen shape type
         for idx, row in df.iterrows():
     
             include = row['Include']
@@ -144,22 +147,20 @@ def main():
             if shape_type == 'rectangle':
                 ax.add_patch(plt.Rectangle((x-0.5, y-0.5), 1, 1, fill=None, edgecolor='black', lw=2))
                 ax.text(x, y, symbol, ha='center', va='center', fontsize=24, weight='bold')
-                #ax.invert_yaxis()
+                ax.invert_yaxis()
             elif shape_type == 'circle':
                 ax.add_patch(plt.Circle((x, y), 0.3, fill=None, edgecolor='black', lw=2))
                 ax.text(x, y, symbol, ha='center', va='center', fontsize=18)
     
 
-# Set the aspect ratio to ensure squares or circles are evenly shaped
+        #Set the aspect ratio to ensure squares or circles are evenly shaped
         ax.set_aspect('equal')
 
-# Set axis limits to ensure all elements are visible and create margins
+        #Set axis limits to ensure all elements are visible and create margins and remove axis ticks and labels and make the axes invisible
         x_margin = 2
         y_margin = 2
         ax.set_xlim(df['x'].min() - x_margin, df['x'].max() + x_margin)
         ax.set_ylim(df['y'].min() - y_margin, df['y'].max() + y_margin)
-
-# Remove axis ticks and labels and make the axes invisible
         ax.set_xticks([])
         ax.set_yticks([])
         ax.spines['top'].set_visible(False)
@@ -368,15 +369,20 @@ def main():
                 # Get the current count for this element (how many rectangles drawn)
                 count = rectangle_counts[(x, y)]
 
-                # Calculate size and offset for the new rectangle (progressively smaller)
-                shrink_factor = 0.15 * count  # Smaller shrink for each additional color
-                size = 0.92 - shrink_factor  # Start with 0.92 and decrease with each rectangle
-                offset = 0.46 - shrink_factor / 2  # Adjust the offset to keep it centered
-
                 # Draw the rectangle with the current size and offset
-                ax.add_patch(plt.Rectangle((x - offset, y - offset), size, size, fill=False, edgecolor=color, zorder=4,
+                
+                if "table" in sheet_name.lower():
+                    # Calculate size and offset for the new rectangle (progressively smaller)
+                    shrink_factor = 0.15 * count  # Smaller shrink for each additional color
+                    size = 0.92 - shrink_factor  # Start with 0.92 and decrease with each rectangle
+                    offset = 0.46 - shrink_factor / 2  # Adjust the offset to keep it centered
+                    ax.add_patch(plt.Rectangle((x - offset, y - offset), size, size, fill=False, edgecolor=color, zorder=4,
                                            linewidth=5, alpha=0.8))
-
+                else:
+                    shrink_factor = 0.05 * count  # Smaller shrink for each additional color
+                    size = 0.25 - shrink_factor  # Start with 0.92 and decrease with each rectangle
+                    ax.add_patch(plt.Circle((x, y), size, fill=False, edgecolor=color, zorder=4,
+                                           linewidth=5, alpha=0.8))
                 # Mark this color as applied to this (x, y)
                 applied_colors[(x, y)].add(color)
 
@@ -466,13 +472,18 @@ def main():
                 # Get the current count for this element (how many rectangles drawn)
                 count = rectangle_counts[(x, y)]
 
-                # Calculate size and offset for the new rectangle (progressively smaller)
-                shrink_factor = 0.15 * count  # Smaller shrink for each additional color
-                size = 0.92 - shrink_factor  # Start with 0.92 and decrease with each rectangle
-                offset = 0.46 - shrink_factor / 2  # Adjust the offset to keep it centered
-
                 # Draw the rectangle with the current size and offset
-                ax.add_patch(plt.Rectangle((x - offset, y - offset), size, size, fill=False, edgecolor=color, zorder=4,
+                if "table" in sheet_name.lower():
+                    # Calculate size and offset for the new rectangle (progressively smaller)
+                    shrink_factor = 0.15 * count  # Smaller shrink for each additional color
+                    size = 0.92 - shrink_factor  # Start with 0.92 and decrease with each rectangle
+                    offset = 0.46 - shrink_factor / 2  # Adjust the offset to keep it centered
+                    ax.add_patch(plt.Rectangle((x - offset, y - offset), size, size, fill=False, edgecolor=color, zorder=4,
+                                           linewidth=5, alpha=0.8))
+                else:
+                    shrink_factor = 0.05 * count  # Smaller shrink for each additional color
+                    size = 0.25 - shrink_factor  # Start with 0.92 and decrease with each rectangle
+                    ax.add_patch(plt.Circle((x, y), size, fill=False, edgecolor=color, zorder=4,
                                            linewidth=5, alpha=0.8))
 
                 # Mark this color as applied to this (x, y)
@@ -490,6 +501,7 @@ def main():
             edgecolor='black',  # Set edge color of the frame
             markerscale=1  # Increases the size of markers in the legend
         )
+        plt.savefig("periodic_ternary.png", dpi=300, bbox_inches='tight')
         plt.show()
 
 # - End of ternary logic - #
