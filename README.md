@@ -20,24 +20,25 @@ Visualizes binary and ternary compounds based on their formulas.
 
 The input file is an Excel file (.xlsx) containing:
 
-	1.	Formula: The chemical formula of the compound (e.g., Fe2O3).
-	2.	Entry Prototype: A classification or structural label for the compound.
+1.Formula: The chemical formula of the compound (e.g., Fe2O3).
+2.Entry Prototype: A classification or structural label for the compound.
 
 ### Calculations and Output
 
-	•	The program calculates the molar ratio of elements in the formula.
-	•	The average coordinate of the compound on the selected periodic table format is determined based on the elements’ positions and their stoichiometric ratios.
-	•	Users can specify binary or ternary data for visualization.
+•The program calculates the molar ratio of elements in the formula.
+•The average coordinate of the compound on the selected periodic table format is determined based on the elements’ positions and their stoichiometric ratios.
+•Users can specify binary or ternary data for visualization.
 
 
 ## **Prerequisites**
 This tool requires the following Python libraries:
 
-	•	pandas
-	•	argparse
-	•	matplotlib
-	•	numpy
-	•	openpyxl (to handle Excel files)
+•pandas
+•argparse
+•matplotlib
+•numpy
+•openpyxl (to handle Excel files)
 
+	pip install pandas matplotlib numpy openpyxl
 
 
