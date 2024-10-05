@@ -7,14 +7,17 @@ This repository contains a Python-based tool for visualizing binary and ternary 
 ## **Features**
 Visualizes binary and ternary compounds based on their formulas.
 * Supports different periodic table formats:
-1.	Classical periodic table (standard format with s, p, d, and f blocks).
-![table_short](https://github.com/user-attachments/assets/a20bea8e-77ce-4259-8541-96e8979170e6)
-2.	Long periodic table (f-block elements are not separated from the rest).
-![table_long](https://github.com/user-attachments/assets/55d93e36-e531-4a54-a8e0-68cbeda8b01d)
-4.	Separated periodic table (p-block, d-block, and f-block elements are visually separated).
-![table_separated](https://github.com/user-attachments/assets/cadba324-a60e-4356-93c1-815c51705c38)
-6.	PCA table (Principal Component Analysis-based visualization).
-![plot_PCA](https://github.com/user-attachments/assets/49d1e9b1-eab8-46f3-9d03-442d918428e5)
+1. Classical periodic table
+<img src="https://github.com/user-attachments/assets/a20bea8e-77ce-4259-8541-96e8979170e6" alt="table_short" width="400"/>
+
+2. Long periodic table (f-block elements are not separated from the rest).
+<img src="https://github.com/user-attachments/assets/55d93e36-e531-4a54-a8e0-68cbeda8b01d" alt="table_long" width="400"/>
+
+3. Separated periodic table (p-block, d-block, and f-block elements are visually separated).
+<img src="https://github.com/user-attachments/assets/cadba324-a60e-4356-93c1-815c51705c38" alt="table_separated" width="400"/>
+
+4. PCA table
+<img src="https://github.com/user-attachments/assets/49d1e9b1-eab8-46f3-9d03-442d918428e5" alt="plot_PCA" width="400"/>
 * Dynamic loading of Excel sheets with user-selected data visualization.
 * Customizable plot shapes (rectangles or circles) depending on the data sheet name.
 
