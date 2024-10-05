@@ -11,8 +11,8 @@ Visualizes binary and ternary compounds based on their formulas.
 2.	Long periodic table (f-block elements are not separated from the rest).
 3.	Separated periodic table (p-block, d-block, and f-block elements are visually separated).
 4.	PCA table (Principal Component Analysis-based visualization).
-•	Dynamic loading of Excel sheets with user-selected data visualization.
-•	Customizable plot shapes (rectangles or circles) depending on the data sheet name.
+• Dynamic loading of Excel sheets with user-selected data visualization.
+• Customizable plot shapes (rectangles or circles) depending on the data sheet name.
 
 ## **How it works**
 
@@ -25,9 +25,9 @@ The input file is an Excel file (.xlsx) containing:
 
 ### Calculations and Output
 
-•The program calculates the molar ratio of elements in the formula.
-•The average coordinate of the compound on the selected periodic table format is determined based on the elements’ positions and their stoichiometric ratios.
-•Users can specify binary or ternary data for visualization.
+• The program calculates the molar ratio of elements in the formula.
+• The average coordinate of the compound on the selected periodic table format is determined based on the elements’ positions and their stoichiometric ratios.
+• Users can specify binary or ternary data for visualization.
 
 
 ## **Prerequisites**
