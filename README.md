@@ -20,8 +20,8 @@ Visualizes binary and ternary compounds based on their formulas.
 
 The input file is an Excel file (.xlsx) containing:
 
-1.Formula: The chemical formula of the compound (e.g., Fe2O3).
-2.Entry Prototype: A classification or structural label for the compound.
+1. Formula: The chemical formula of the compound (e.g., Fe2O3).
+2. Entry Prototype: A classification or structural label for the compound.
 
 ### Calculations and Output
 
