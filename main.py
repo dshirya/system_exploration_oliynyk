@@ -110,7 +110,7 @@ def main():
     def periodic_table():
 
         # Calculate the range of x and y values
-        x_range = df['x'].max() - df['x'].min() + 1  # Adding 1 to ensure the full range is covered
+        x_range = df['x'].max() - df['x'].min() + 1   # Adding 1 to ensure the full range is covered
         y_range = df['y'].max() - df['y'].min() + 1
 
         # Scale factor for adjusting the figure size (adjust as needed based on the visual output)
@@ -146,19 +146,19 @@ def main():
     
             if shape_type == 'rectangle':
                 ax.add_patch(plt.Rectangle((x-0.5, y-0.5), 1, 1, fill=None, edgecolor='black', lw=2))
-                ax.text(x, y, symbol, ha='center', va='center', fontsize=24, weight='bold')
+                ax.text(x, y, symbol, ha='center', va='center', fontsize=24, weight='bold', zorder = 5)
                 ax.invert_yaxis()
             elif shape_type == 'circle':
                 ax.add_patch(plt.Circle((x, y), 0.3, fill=None, edgecolor='black', lw=2))
-                ax.text(x, y, symbol, ha='center', va='center', fontsize=18)
+                ax.text(x, y, symbol, ha='center', va='center', fontsize=18, zorder = 5)
     
 
         #Set the aspect ratio to ensure squares or circles are evenly shaped
         ax.set_aspect('equal')
 
         #Set axis limits to ensure all elements are visible and create margins and remove axis ticks and labels and make the axes invisible
-        x_margin = 2
-        y_margin = 2
+        x_margin = 1.5
+        y_margin = 1.5
         ax.set_xlim(df['x'].min() - x_margin, df['x'].max() + x_margin)
         ax.set_ylim(df['y'].min() - y_margin, df['y'].max() + y_margin)
         ax.set_xticks([])
@@ -265,13 +265,13 @@ def main():
             if is_binary:
                 if structure not in added_labels:
                     ax.scatter(center_x, center_y, edgecolors='black', facecolors='None', label=f'{structure}',
-                               zorder=4, s=50, marker=marker, alpha=0.5)
+                               zorder=4, s=200, marker=marker, alpha=0.5, linewidths = 4)
                     added_labels.add(structure)
                 else:
-                    ax.scatter(center_x, center_y, edgecolors='black', facecolors='None', zorder=4, s=50, marker=marker,
-                               alpha=0.5)
+                    ax.scatter(center_x, center_y, edgecolors='black', facecolors='None', zorder=4, s=200, marker=marker,
+                               alpha=0.5, linewidths = 4)
 
-                ax.plot(coords_x, coords_y, color='black', zorder=3, linestyle='-', alpha=0.5)
+                #ax.plot(coords_x, coords_y, color='black', zorder=3, linestyle='-', alpha=0.5)
 
             if not is_binary:
                 elements = compound.elements
@@ -279,25 +279,31 @@ def main():
                 fixed_element = list(elements.keys())[fixed_number]
 
                 if fixed_element not in color_map:
-                    color_map[fixed_element] = colors[color_counter]
+                    color_map[fixed_element] = colors[color_counter % len(colors)]
                     color_counter += 1
                 color = color_map[fixed_element]
                 x, y = element_dict[fixed_element]
-                rectangle = patches.Rectangle((x - 0.5, y - 0.5), 1, 1, facecolor=color)
+                if "table" in sheet_name.lower():
+                    rectangle = patches.Rectangle((x - 0.5, y - 0.5), 1, 1, facecolor=color)
+                else:
+                    rectangle = patches.Circle((x,y), 0.29, facecolor=color)
                 ax.add_patch(rectangle)
                 ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', zorder=4, s=50, marker=marker,
                            alpha=0.5)
-                ax.plot(coords_x, coords_y, color=color, zorder=3, linestyle='-', alpha=0.5)
+                ax.plot(coords_x, coords_y, color=color, zorder=3, linestyle='-', alpha=0.1)
 
         plt.legend(
-            loc='upper right',  # Change legend position
-            fontsize=15,  # Increase font size for labels
-            frameon=True,  # Show legend frame
+            loc='upper center',  # Change legend position
+            fontsize=24,  # Increase font size for labels
+            frameon=False,  # Show legend frame
             framealpha=1,  # Set transparency of the frame
             edgecolor='black',  # Set edge color of the frame
-            markerscale=1  # Increases the size of markers in the legend
+            markerscale=1,  # Increases the size of markers in the legend
+            ncol=3
         )
-        plt.show()
+        plt.savefig("periodic.png", dpi=600, bbox_inches='tight')
+        plt.show
+        
 
 # - End of psuedo-ternary logic - #
 # - Beginning of binary logic - #
@@ -347,12 +353,15 @@ def main():
                 marker_index += 1
             marker = structure_markers[structure]
 
+
+            ax.plot(coords_x, coords_y, color=color, linestyle='-', zorder=2, alpha=0.1)
+            
             # Plot the center point for the compound using the marker
             if structure not in added_labels:
-                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', label=f'{structure}', zorder=4, s=100, marker=marker,alpha=0.5)
+                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', label=f'{structure}', zorder=4, s=200, marker=marker,alpha=1, linewidths = 4)
                 added_labels.add(structure)
             else:
-                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', zorder=4, s=100, marker=marker, alpha=0.5)
+                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', zorder=4, s=200, marker=marker, alpha=1, linewidths = 4)
 
             # Loop through each element in the compound
             for x, y in original_coordinates:
@@ -389,18 +398,19 @@ def main():
                 # Increment the count for this element
                 rectangle_counts[(x, y)] += 1
 
-                ax.plot(coords_x, coords_y, color=color, linestyle='-', zorder=2, alpha=0.5)
+                
 
         plt.legend(
-            loc='upper right',  # Change legend position
-            fontsize=15,  # Increase font size for labels
-            frameon=True,  # Show legend frame
+            loc='upper center',  # Change legend position
+            fontsize=24,  # Increase font size for labels
+            frameon=False,  # Show legend frame
             framealpha=1,  # Set transparency of the frame
             edgecolor='black',  # Set edge color of the frame
-            markerscale=1  # Increases the size of markers in the legend
+            markerscale=1,  # Increases the size of markers in the legend
+            ncol=3
         )
-        plt.savefig("periodic_binary.png", dpi=300, bbox_inches='tight')
-        plt.show()
+        plt.savefig("binary.png", dpi=600, bbox_inches='tight')
+        #plt.show()
 
 # - End of binary logic - #
 # - Beginning of ternary logic - #
@@ -451,14 +461,14 @@ def main():
 
             # Plot the center point for the compound using the marker
             if structure not in added_labels:
-                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', label=f'{structure}', zorder=4, s=100, marker=marker,alpha=0.5)
+                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', label=f'{structure}', zorder=4, s=200, marker=marker,alpha=0.5, linewidths = 4)
                 added_labels.add(structure)
             else:
-                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', zorder=4, s=100, marker=marker, alpha=0.5)
+                ax.scatter(center_x, center_y, edgecolors=color, facecolors='None', zorder=4, s=200, marker=marker, alpha=0.5, linewidths = 4)
 
             # Loop through each element in the compound
             for x, y in original_coordinates:
-                ax.plot([center_x, x], [center_y, y], color=color, linestyle='-', zorder=2, alpha=0.5)
+                ax.plot([center_x, x], [center_y, y], color=color, linestyle='-', zorder=2, alpha=0.1)
                 # For other elements, draw rectangles and connecting lines as usual
                 if (x, y) not in rectangle_counts:
                     rectangle_counts[(x, y)] = 0
@@ -494,14 +504,15 @@ def main():
 
 
         plt.legend(
-            loc='upper right',  # Change legend position
-            fontsize=15,  # Increase font size for labels
-            frameon=True,  # Show legend frame
+            loc='upper center',  # Change legend position
+            fontsize=24,  # Increase font size for labels
+            frameon=False,  # Show legend frame
             framealpha=1,  # Set transparency of the frame
             edgecolor='black',  # Set edge color of the frame
-            markerscale=1  # Increases the size of markers in the legend
+            markerscale=1,  # Increases the size of markers in the legend
+            ncol=3
         )
-        plt.savefig("periodic_ternary.png", dpi=300, bbox_inches='tight')
+        plt.savefig("ternary.png", dpi=600, bbox_inches='tight')
         plt.show()
 
 # - End of ternary logic - #
