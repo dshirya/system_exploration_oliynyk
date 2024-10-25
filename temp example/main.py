@@ -1,10 +1,13 @@
 import argparse
-from data_handler import *
-from data_maker import *
-from visualize_data import *
+from data_processing.input_handler import input_handler
+from data_processing.coord_excel_handler import *
+from data_processing.make_periodic_table import periodic_table
+from make_data import *
+from display_data import *
 
 
 def main():
+    # The following code should be only for obtaining the user's input
     parser = argparse.ArgumentParser(
         prog='Data Visualization Tool',
         usage='py data_visualization.py [options] [file_path] || Use -h option for more information.',
@@ -25,15 +28,26 @@ def main():
 
     args = parser.parse_args()
     file_path = args.file_path
-    sheet_numbers, table_type = user_input(file_path)
+    user_input_sheet_numbers = input_handler(file_path)
+    coord_df, coord_sheet_name = excel_to_dataframe()
+    element_dict = create_element_dict(coord_df)
+    periodic_table_ax = periodic_table(coord_df, coord_sheet_name)
 
-    if args.binary is True:
-        print()
-    elif args.ternary is True:
-        print()
+    if args.binary:
+        compounds = make_binary_data(file_path, user_input_sheet_numbers)
+        display_binary_data_type(periodic_table_ax, compounds, element_dict, coord_sheet_name)
+
+    elif args.ternary:
+        compounds = make_ternary_data(file_path, user_input_sheet_numbers)
+        display_ternary_data_type(periodic_table_ax, compounds, element_dict, coord_sheet_name)
+
     else:
-        compounds = make_psuedobinary_data(file_path, sheet_numbers)
-        display_pseudobinary_data_type(compounds, table_type)
+        compounds, fixed_number = make_psuedobinary_data(file_path, user_input_sheet_numbers)
+        display_pseudobinary_data_type(periodic_table_ax, compounds, fixed_number, element_dict, coord_sheet_name)
+
+    return 0
+
 
 if __name__ == '__main__':
     main()
+
