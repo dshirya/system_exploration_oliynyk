@@ -15,11 +15,8 @@ def display_pseudobinary_data_type(ax, compounds, fixed_number, element_dict, co
 
     for compound in compounds:
         verify_elements(compound, element_dict)
-<<<<<<<< HEAD:display_data/display_psuedobinary.py
         jitter = np.random.uniform(0, 0)
-========
         jitter = np.random.uniform(-0.10, 0.10)
->>>>>>>> f8a49827c570081e93589b9ecb9bea9825d90e3d:temp example/display_data/display_psuedobinary.py
 
         structure = compound.structure
         if structure not in structure_marker_map:
@@ -48,11 +45,10 @@ def display_pseudobinary_data_type(ax, compounds, fixed_number, element_dict, co
                 ax.scatter(center_x, center_y, edgecolors='black', facecolors='None', zorder=4, s=200, marker=marker,
                            alpha=0.5, linewidths=4)
 
-<<<<<<<< HEAD:display_data/display_psuedobinary.py
+
                 ax.plot(coords_x, coords_y, color='black', zorder=3, linestyle='-', alpha=0.5)
-========
+
                 #ax.plot(coords_x, coords_y, color='black', zorder=3, linestyle='-', alpha=0.5)
->>>>>>>> f8a49827c570081e93589b9ecb9bea9825d90e3d:temp example/display_data/display_psuedobinary.py
 
         if not is_binary:
             elements = compound.elements
@@ -82,9 +78,7 @@ def display_pseudobinary_data_type(ax, compounds, fixed_number, element_dict, co
         markerscale=1,  # Increases the size of markers in the legend
         ncol=3
     )
-<<<<<<<< HEAD:display_data/display_psuedobinary.py
+
     plt.savefig("pseudobinary.png", dpi=600, bbox_inches='tight')
-========
     plt.show()
->>>>>>>> f8a49827c570081e93589b9ecb9bea9825d90e3d:temp example/display_data/display_psuedobinary.py
 
